@@ -20,5 +20,16 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+    
+        void draw_person(ofPoint pos);
+    
+        vector<ofPoint> people;
+        const float person_size {20};
+    
+        const int person_count {10};
+    
+        bool focused {false};
+        ofPoint focus_offset;
+    
 		
 };
