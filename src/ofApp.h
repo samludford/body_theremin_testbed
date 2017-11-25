@@ -24,9 +24,12 @@ class ofApp : public ofBaseApp{
         void draw_person(ofPoint pos);
     
         vector<ofPoint> people;
-        const float person_size {20};
     
+    
+        const float person_size {20};
         const int person_count {10};
+        const int ring_count {6};
+        float radius_interval;
     
         bool focused {false};
         ofPoint focus_offset;

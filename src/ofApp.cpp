@@ -7,11 +7,15 @@ void ofApp::setup(){
     ofBackground(255);
     ofSetColor(0);
     
+    ofSetCircleResolution(100);
+    
     float spacing = ofGetWidth() / person_count;
     float start_x = spacing / 2.0;
     for(int i=0 ; i <person_count ; i++) {
         people.push_back(ofPoint(start_x + i*spacing, ofGetHeight()/2.0));
     }
+    
+    radius_interval = (ofGetWidth()/2.0 - 50) / ring_count;
     
 }
 
@@ -22,6 +26,17 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    
+    ofPushMatrix();
+    ofPushStyle();
+    ofNoFill();
+    ofTranslate(ofGetWidth()/2.0, ofGetHeight()/2.0);
+    for(int i=0 ; i < ring_count ; i++) {
+        ofDrawCircle(0,0,(i+1)*radius_interval);
+    }
+    ofPopStyle();
+    ofPopMatrix();
+    
     for(int i=0 ; i < people.size() ; i++) {
         draw_person(people[i]);
     }
@@ -29,7 +44,9 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    
+    if(key == ' ') {
+        ofSaveScreen(ofToString(ofGetFrameNum()) + ".png");
+    }
 }
 
 //--------------------------------------------------------------
@@ -105,12 +122,23 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 // utilities
 
 void ofApp::draw_person(ofPoint pos) {
+    
     ofPushStyle();
-    ofSetColor(255,0,0);
+    
+    ofPoint delta = pos - ofPoint(ofGetWidth()/2.0, ofGetHeight()/2.0);
+    float dist = sqrt(delta.x * delta.x + delta.y * delta.y);
+    if(dist > ring_count*radius_interval) {
+        ofSetColor(255,0,0, 30);
+    } else {
+        ofSetColor(255,0,0, 255);
+    }
+    
+    
     ofFill();
     ofDrawCircle(pos.x, pos.y, person_size);
-    ofSetColor(0);
+    ofSetColor(0, 255);
     ofNoFill();
     ofDrawCircle(pos.x, pos.y, person_size);
     ofPopStyle();
+    
 }
